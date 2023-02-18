@@ -3,7 +3,7 @@ const router = require('express').Router();
 const DB_user = require('../../DB-codes/users/DB-user-api');
 const bcrypt= require('bcryptjs');
 const jwt = require('jsonwebtoken');
-//const {verify} = require('../../middlewares/user-verification');
+const {verify} = require('../../middlewares/user-verification');
 
 router.get('/login', async(req, res) => {
     let errors = [];
@@ -58,16 +58,16 @@ router.post('/login', async (req, res) => {
     
 });
 
-// router.post('/logout', verify ,(req,res)=>{
-//     //destroy token
-//     res.cookie('auth-token', '', { maxAge:1 });
-//     res.redirect('/api/auth/login');
-// });
+router.post('/logout', verify ,(req,res)=>{
+    //destroy token
+    res.cookie('auth-token', '', { maxAge:1 });
+    res.send("logged out");
+    //res.redirect('/api/auth/login');
+});
 
-// router.get('/user_id', verify, (req,res)=>{
-//     //returns the id of logged in user
-//     res.send({user_id : req.user.USER_ID});
-// });
-
+router.get('/info', verify, (req,res)=>{
+    //returns the id of logged in user
+    res.send({user_id : req.user.USER_ID});
+});
 
 module.exports = router;
