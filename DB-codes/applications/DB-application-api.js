@@ -38,14 +38,14 @@ async function sortApplicationsBySeniorityAndDistrict(dhakaFlag){
         sql = `SELECT * FROM student s 
                 INNER JOIN application_for_seat a ON s.id = a.student_id
                 INNER JOIN address ad ON s.id = ad.id
-                WHERE a.status = 'forwaredToProvost' AND ad.district = 'Dhaka'
+                WHERE a.status = 'forwaredToProvost' AND ad.type = 'present' AND ad.district = 'Dhaka'
                 ORDER BY s.degree DESC, s.level DESC`;
     }
     else {
         sql = `SELECT * FROM student s 
         INNER JOIN application_for_seat a ON s.id = a.student_id
         INNER JOIN address ad ON s.id = ad.id
-        WHERE a.status = 'forwaredToProvost' AND ad.district NOT IN ('Dhaka')
+        WHERE a.status = 'forwaredToProvost' AND ad.type = 'present' AND ad.district NOT IN ('Dhaka')
         ORDER BY s.degree DESC, s.level DESC`;
     }
     const binds = []
@@ -59,13 +59,13 @@ async function sortApplicationsBySeniorityAndDistrictAndResult(dhakaFlag){
         sql = `SELECT * FROM student s 
                 INNER JOIN application_for_seat a ON s.id = a.student_id
                 INNER JOIN address ad ON s.id = ad.id
-                WHERE a.status = 'forwaredToProvost' AND ad.district = 'Dhaka'
+                WHERE a.status = 'forwaredToProvost' AND ad.type = 'present' AND ad.district = 'Dhaka'
                 ORDER BY s.degree DESC, s.level DESC, s.cgpa DESC`;
     } else {
         sql = `SELECT * FROM student s 
         INNER JOIN application_for_seat a ON s.id = a.student_id
         INNER JOIN address ad ON s.id = ad.id
-        WHERE a.status = 'forwaredToProvost' AND ad.district NOT IN ('Dhaka')
+        WHERE a.status = 'forwaredToProvost' AND ad.type = 'present' AND ad.district NOT IN ('Dhaka')
         ORDER BY s.degree DESC, s.level DESC, s.cgpa DESC`;
     }
     const binds = []
