@@ -17,16 +17,33 @@ async function getAllSubmittedApplications(){
     return result;
 }
 
+async function forwardApplication(application_id){
+    const sql = `UPDATE application_for_seat SET status = 'forwardedToProvost' WHERE id = $1`;
+    const binds = [application_id]
+    await database.execute(sql, binds);
+}
+
 async function getAllForwardedApplications(){
-    const sql = `SELECT * FROM application_for_seat WHERE status = 'forwaredToProvost'`;
+    const sql = `SELECT * FROM application_for_seat WHERE status = 'forwardedToProvost'`;
     const binds = []
     const result = (await database.execute(sql, binds)).rows;
     return result;
 }
 
-async function sortApplicationsBySeniority(){
-    const sql = `SELECT * FROM student s INNER JOIN application_for_seat a ON s.id = a.student_id
-                WHERE a.status = 'forwaredToProvost' ORDER BY s.degree DESC, s.level DESC`;
+async function sortApplicationsByDistrict(dhakaFlag){
+    let sql;
+    if(dhakaFlag == 1) {
+        sql = `SELECT * FROM student s 
+                INNER JOIN application_for_seat a ON s.id = a.student_id
+                INNER JOIN address ad ON s.id = ad.id
+                WHERE a.status = 'forwardedToProvost' AND ad.type = 'present' AND ad.district = 'Dhaka'`;
+    } 
+    else {
+        sql = `SELECT * FROM student s 
+        INNER JOIN application_for_seat a ON s.id = a.student_id
+        INNER JOIN address ad ON s.id = ad.id
+        WHERE a.status = 'forwardedToProvost' AND ad.type = 'present' AND ad.district NOT IN ('Dhaka')`;
+    }
     const binds = []
     const result = (await database.execute(sql, binds)).rows;
     return result;
@@ -38,14 +55,14 @@ async function sortApplicationsBySeniorityAndDistrict(dhakaFlag){
         sql = `SELECT * FROM student s 
                 INNER JOIN application_for_seat a ON s.id = a.student_id
                 INNER JOIN address ad ON s.id = ad.id
-                WHERE a.status = 'forwaredToProvost' AND ad.type = 'present' AND ad.district = 'Dhaka'
+                WHERE a.status = 'forwardedToProvost' AND ad.type = 'present' AND ad.district = 'Dhaka'
                 ORDER BY s.degree DESC, s.level DESC`;
     }
     else {
         sql = `SELECT * FROM student s 
         INNER JOIN application_for_seat a ON s.id = a.student_id
         INNER JOIN address ad ON s.id = ad.id
-        WHERE a.status = 'forwaredToProvost' AND ad.type = 'present' AND ad.district NOT IN ('Dhaka')
+        WHERE a.status = 'forwardedToProvost' AND ad.type = 'present' AND ad.district NOT IN ('Dhaka')
         ORDER BY s.degree DESC, s.level DESC`;
     }
     const binds = []
@@ -59,13 +76,13 @@ async function sortApplicationsBySeniorityAndDistrictAndResult(dhakaFlag){
         sql = `SELECT * FROM student s 
                 INNER JOIN application_for_seat a ON s.id = a.student_id
                 INNER JOIN address ad ON s.id = ad.id
-                WHERE a.status = 'forwaredToProvost' AND ad.type = 'present' AND ad.district = 'Dhaka'
+                WHERE a.status = 'forwardedToProvost' AND ad.type = 'present' AND ad.district = 'Dhaka'
                 ORDER BY s.degree DESC, s.level DESC, s.cgpa DESC`;
     } else {
         sql = `SELECT * FROM student s 
         INNER JOIN application_for_seat a ON s.id = a.student_id
         INNER JOIN address ad ON s.id = ad.id
-        WHERE a.status = 'forwaredToProvost' AND ad.type = 'present' AND ad.district NOT IN ('Dhaka')
+        WHERE a.status = 'forwardedToProvost' AND ad.type = 'present' AND ad.district NOT IN ('Dhaka')
         ORDER BY s.degree DESC, s.level DESC, s.cgpa DESC`;
     }
     const binds = []
@@ -75,6 +92,12 @@ async function sortApplicationsBySeniorityAndDistrictAndResult(dhakaFlag){
 
 async function rejectApplication(application_id){
     const sql = `UPDATE application_for_seat SET status = 'rejected' WHERE id = $1`;
+    const binds = [application_id]
+    await database.execute(sql, binds);
+}
+
+async function approveApplication(application_id){
+    const sql = `UPDATE application_for_seat SET status = 'approve' WHERE id = $1`;
     const binds = [application_id]
     await database.execute(sql, binds);
 }
@@ -102,11 +125,13 @@ async function getApprovedApplications(){
 module.exports = {
     submitApplication,
     getAllSubmittedApplications,
+    forwardApplication,
     getAllForwardedApplications,
-    sortApplicationsBySeniority,
+    sortApplicationsByDistrict,
     sortApplicationsBySeniorityAndDistrict,
     sortApplicationsBySeniorityAndDistrictAndResult,
     rejectApplication,
+    approveApplication,
     callForViva,
     getCalledForVivaApplications,
     getApprovedApplications

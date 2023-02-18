@@ -22,7 +22,10 @@ const authRoute = require('./routes/users/auth');
 const studentRoute = require('./routes/users/student');
 
 //NOTICE
-const noticeRoute = require('./routes/notices/notice')
+const noticeRoute = require('./routes/notices/notice');
+
+//APPLICATION
+const applicationRoute = require('./routes/applications/application');
 
 //route middleware
 //USER
@@ -31,6 +34,9 @@ app.use('/api/student', studentRoute);
 
 //NOTICE
 app.use('/api/notice',noticeRoute); 
+
+//APPLICATION
+app.use('/api/application',applicationRoute); 
 
 //PORT
 const port = process.env.PORT;
