@@ -20,7 +20,7 @@ router.get('/login', async(req, res) => {
 router.post('/login', async (req, res) => {
     
     let result = [], errors = [];
-    result = await DB_user.getUserbyId(req.body.id);
+    result = await DB_user.getUserById(req.body.id);
     // if no result, there is no such user
     if (result === undefined) {
         errors.push('Wrong User Id');
@@ -41,17 +41,19 @@ router.post('/login', async (req, res) => {
         }
     }
     if(errors.length == 0){
-        res.redirect('/api/user');
+        res.send("logged in");
+        //res.redirect('/api/user');
     } else {
-        res.render('body/auth/login.ejs', {
-            title : 'Hall Management Sytem Login',
-            user: null,
-            errors : errors,
-            form: {
-                id: req.body.id,
-                password: req.body.password
-            }
-        });
+        res.send("Error");
+        // res.render('body/auth/login.ejs', {
+        //     title : 'Hall Management Sytem Login',
+        //     user: null,
+        //     errors : errors,
+        //     form: {
+        //         id: req.body.id,
+        //         password: req.body.password
+        //     }
+        // });
     }
     
 });
