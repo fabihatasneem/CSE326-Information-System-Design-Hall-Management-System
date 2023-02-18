@@ -1,6 +1,22 @@
 const Database = require('../database');
 const database = new Database();
 
+async function submitApplication(student_id, application_pdf){
+    var submission_time = new Date();
+    console.log(submission_time);
+    const sql = `INSERT INTO application_for_seat (student_id, submission_time, status, application_pdf)
+          VALUES ($1, $2, 'submitted', $3)`;
+    const binds = [student_id, submission_time, application_pdf]
+    await database.execute(sql, binds);
+}
+
+async function getAllSubmittedApplications(){
+    const sql = `SELECT * FROM application_for_seat WHERE status = 'submitted'`;
+    const binds = []
+    const result = (await database.execute(sql, binds)).rows;
+    return result;
+}
+
 async function getAllForwardedApplications(){
     const sql = `SELECT * FROM application_for_seat WHERE status = 'forwaredToProvost'`;
     const binds = []
@@ -57,16 +73,41 @@ async function sortApplicationsBySeniorityAndDistrictAndResult(dhakaFlag){
     return result;
 }
 
-async function rejectApplication(id){
+async function rejectApplication(application_id){
     const sql = `UPDATE application_for_seat SET status = 'rejected' WHERE id = $1`;
-    const binds = [id]
+    const binds = [application_id]
     await database.execute(sql, binds);
 }
 
+async function callForViva(application_id){
+    const sql = `UPDATE application_for_seat SET status = 'calledForViva' WHERE id = $1`;
+    const binds = [application_id]
+    await database.execute(sql, binds);
+}
+
+async function getCalledForVivaApplications(){
+    const sql = `SELECT * FROM application_for_seat WHERE status = 'calledForViva'`;
+    const binds = []
+    const result = (await database.execute(sql, binds)).rows;
+    return result;
+}
+
+async function getApprovedApplications(){
+    const sql = `SELECT * FROM application_for_seat WHERE status = 'approved'`;
+    const binds = []
+    const result = (await database.execute(sql, binds)).rows;
+    return result;
+}
+
 module.exports = {
+    submitApplication,
+    getAllSubmittedApplications,
     getAllForwardedApplications,
     sortApplicationsBySeniority,
     sortApplicationsBySeniorityAndDistrict,
     sortApplicationsBySeniorityAndDistrictAndResult,
-    rejectApplication
+    rejectApplication,
+    callForViva,
+    getCalledForVivaApplications,
+    getApprovedApplications
 }
