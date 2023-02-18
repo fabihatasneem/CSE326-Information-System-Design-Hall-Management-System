@@ -34,17 +34,15 @@ async function getForwardedNotices(){
 }
 
 async function approveNotice(notice_id){
-    const sql = `UPDATE notice SET status = 'approved' WHERE id = $2 RETURNING *`;
+    const sql = `UPDATE notice SET status = 'approved' WHERE id = $2`;
     const binds = [notice_id]
-    const result = (await database.execute(sql, binds)).rows;
-    return result[0];
+    await database.execute(sql, binds);
 }
 
 async function declineNotice(notice_id){
-    const sql = `UPDATE notice SET status = 'declined' WHERE id = $2 RETURNING *`;
+    const sql = `UPDATE notice SET status = 'declined' WHERE id = $2`;
     const binds = [notice_id]
-    const result = (await database.execute(sql, binds)).rows;
-    return result[0];
+    await database.execute(sql, binds);
 }
 
 module.exports = {
