@@ -22,7 +22,7 @@ async function verifyUploadNotice(req,res,next){
     try{
         const verified = jwt.verify(token, process.env.JWT_TOKEN_HELPER);
         req.user =await DB_user.getUserById(verified.user_id);
-        if(req.user.role != 'staff' ) return res.redirect('/api/auth/login?status=Access Denied');
+        if(req.user.role != 'staff' ) c
         next();
 
     }catch(err){

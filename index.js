@@ -19,6 +19,7 @@ app.use(express.json());
 //import routes
 //USER
 const authRoute = require('./routes/users/auth');
+const studentRoute = require('./routes/users/student');
 
 //NOTICE
 const noticeRoute = require('./routes/notices/notice')
@@ -26,9 +27,10 @@ const noticeRoute = require('./routes/notices/notice')
 //route middleware
 //USER
 app.use('/api/auth', authRoute);    // everything in authroute will have this prefix
+app.use('/api/student', studentRoute);    
 
 //NOTICE
-app.use('./api/notice',noticeRoute); 
+app.use('/api/notice',noticeRoute); 
 
 //PORT
 const port = process.env.PORT;
