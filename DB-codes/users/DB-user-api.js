@@ -9,6 +9,8 @@ async function getUserById(user_id){
     return result[0];
 }
 
+
+
 module.exports = {
     getUserById
 }
