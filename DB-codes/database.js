@@ -1,28 +1,26 @@
 require('dotenv').config();
 const { Client } = require('pg')
 
+
 class Database {
-    constructor() {
-        this.client = undefined;
-    }
     // code to execute sql
     execute = async function (sql, binds) {
-        if(this.client === undefined){
-            this.client = new Client({
+        if(Database.client === undefined){
+            Database.client = new Client({
                 host: process.env.DB_host,
                 port: process.env.DB_port,
                 database: process.env.DB_name,
                 user: process.env.DB_user,
                 password: process.env.DB_password,
             })
-            this.client.connect(function(err) {
+            Database.client.connect(function(err) {
                 if (err) throw err;
                 console.log("Connected!");
             });
         }
         let results;
         try {
-            results = await this.client.query(sql,binds);
+            results = await Database.client.query(sql,binds);
             return results;
         } catch (err) {
             console.log("ERROR executing sql: " + err.message);
