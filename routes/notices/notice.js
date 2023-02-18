@@ -11,7 +11,6 @@ router.post('/upload',verifyUploadNotice, async (req,res)=>{
 });
 
 router.get('/view',verifyViewNotice, async (req,res)=>{  
-    console.log("hello"); 
     res.send(await DB_notice.getAllNotices());
 });
 
