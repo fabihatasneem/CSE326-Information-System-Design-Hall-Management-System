@@ -67,7 +67,8 @@ async function getStudentAdditionalInfoById(id){
 
 async function updateAdditionalInfoById(father_image, father_phone, father_occupational_certificate,
         mother_image, mother_phone, mother_occupational_certificate, guardian_name, guardian_image, guardian_phone, 
-        student_id_card, transcript, birth_certificate, utility_bill, siblings_document, yearly_family_income, id){
+        student_id_card, transcript, birth_certificate, utility_bill, siblings_document, yearly_family_income,
+        parent_transfer_order, id){
     const sql = `UPDATE student_additional_info
                 SET father_image = COALESCE($1,father_image),
                 father_phone = COALESCE($2, father_phone),

@@ -34,13 +34,13 @@ async function getForwardedNotices(){
 }
 
 async function approveNotice(notice_id){
-    const sql = `UPDATE notice SET status = 'approved' WHERE id = $2`;
+    const sql = `UPDATE notice SET status = 'approved' WHERE id = $1`;
     const binds = [notice_id]
     await database.execute(sql, binds);
 }
 
 async function declineNotice(notice_id){
-    const sql = `UPDATE notice SET status = 'declined' WHERE id = $2`;
+    const sql = `UPDATE notice SET status = 'declined' WHERE id = $1`;
     const binds = [notice_id]
     await database.execute(sql, binds);
 }
