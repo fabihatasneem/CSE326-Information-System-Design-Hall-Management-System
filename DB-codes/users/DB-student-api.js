@@ -1,37 +1,6 @@
 const Database = require('../database');
 const database = new Database();
 
-async function getAllStudents(){
-    const sql = `SELECT * FROM student`;
-    const binds = []
-    const result = (await database.execute(sql, binds)).rows;
-    return result;
-}
-
-async function getStudentsByDepartment(department){
-    const sql = `SELECT * FROM student
-                WHERE department = $1`;
-    const binds = [department]
-    const result = (await database.execute(sql, binds)).rows;
-    return result;
-}
-
-async function getStudentsByBatch(level, term){
-    const sql = `SELECT * FROM student
-                WHERE degree = 'B.Sc' AND level = $2 AND term = $3`;
-    const binds = [level, term]
-    const result = (await database.execute(sql, binds)).rows;
-    return result;
-}
-
-async function getStudentsByDegree(degree){
-    const sql = `SELECT * FROM student
-                WHERE degree = $1`;
-    const binds = [degree]
-    const result = (await database.execute(sql, binds)).rows;
-    return result;
-}
-
 async function getStudentInfoById(id){
     const sql = `SELECT * FROM student
                 INNER JOIN address ON student.id = address.id
@@ -41,20 +10,12 @@ async function getStudentInfoById(id){
     return result[0];
 }
 
-async function getPresentAddressById(id){
+async function getAddressById(id){
     const sql = `SELECT * FROM address
-                WHERE id = $1 AND type = 'present'`;
+                WHERE id = $1`;
     const binds = [id]
     const result = (await database.execute(sql, binds)).rows;
-    return result[0];
-}
-
-async function getPermanentAddressById(id){
-    const sql = `SELECT * FROM address
-                WHERE id = $1 AND type = 'permanent'`;
-    const binds = [id]
-    const result = (await database.execute(sql, binds)).rows;
-    return result[0];
+    return result;
 }
 
 async function getStudentAdditionalInfoById(id){
@@ -87,19 +48,16 @@ async function updateAdditionalInfoById(father_image, father_phone, father_occup
                 yearly_family_income = COALESCE($15, yearly_family_income),
                 parent_transfer_order = COALESCE($16, parent_transfer_order)
                 WHERE id = $17`;
-    const binds = [id]
-    const result = (await database.execute(sql, binds)).rows;
-    return result[0];
+    const binds = [father_image, father_phone, father_occupational_certificate,
+        mother_image, mother_phone, mother_occupational_certificate, guardian_name, guardian_image, guardian_phone, 
+        student_id_card, transcript, birth_certificate, utility_bill, siblings_document, yearly_family_income,
+        parent_transfer_order, id]
+    await database.execute(sql, binds);
 }
 
 module.exports = {
-    getAllStudents,
-    getStudentsByDepartment,
-    getStudentsByBatch,
-    getStudentsByDegree,
     getStudentInfoById,
-    getPresentAddressById,
-    getPermanentAddressById,
+    getAddressById,
     getStudentAdditionalInfoById,
     updateAdditionalInfoById
 }
