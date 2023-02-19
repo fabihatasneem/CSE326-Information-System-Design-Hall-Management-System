@@ -14,7 +14,6 @@ async function getAllNotices(){
 
 async function forwardNoticeToProvost(staff_id, notice_title, notice_pdf){
     var upload_time = new Date();
-    console.log(upload_time);
     var status = "forwardedToProvost";
     const sql = `INSERT INTO notice (staff_id, upload_time, status, notice_pdf, title)
           VALUES ($1, $2, $3, $4, $5)`;

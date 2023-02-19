@@ -3,7 +3,6 @@ const database = new Database();
 
 async function submitApplication(student_id, application_pdf){
     var submission_time = new Date();
-    console.log(submission_time);
     const sql = `INSERT INTO application_for_seat (student_id, submission_time, status, application_pdf)
           VALUES ($1, $2, 'submitted', $3)`;
     const binds = [student_id, submission_time, application_pdf]

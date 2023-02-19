@@ -55,9 +55,25 @@ async function updateAdditionalInfoById(father_image, father_phone, father_occup
     await database.execute(sql, binds);
 }
 
+async function updateResidencyStatusToResident(student_id){
+    const sql = `UPDATE student SET residency_status = 'resident'
+                WHERE id = $1`;
+    const binds = [student_id]
+    await database.execute(sql, binds);
+}
+
+async function updateResidencyStatusToAttached(student_id){
+    const sql = `UPDATE student SET residency_status = 'attached'
+                WHERE id = $1`;
+    const binds = [student_id]
+    await database.execute(sql, binds);
+}
+
 module.exports = {
     getStudentInfoById,
     getAddressById,
     getStudentAdditionalInfoById,
-    updateAdditionalInfoById
+    updateAdditionalInfoById,
+    updateResidencyStatusToResident,
+    updateResidencyStatusToAttached
 }
