@@ -10,7 +10,14 @@ router.post('/submit',verifyStudent, async (req,res)=>{
 });
 
 router.get('/view',verifyViewNotice, async (req,res)=>{  
-    res.send(await DB_notice.getAllNotices());
+    notices = await DB_notice.getAllNotices();
+    console.log(notices);
+    res.render('layout.ejs', {
+            title : "All Notices",
+            body : ['notice/allnotices'],
+            notices : notices,
+            cur_user_id : req.user.id
+        });
 });
 
 router.get('/forwarded',verifyApproveNotice, async (req,res)=>{   

@@ -5,7 +5,13 @@ const {verifyViewStudent} = require('../../middlewares/user-verification');
 
 router.get('/info/:id', verifyViewStudent,async (req,res)=>{
     //returns the id of logged in user
-    res.send(await DB_student.getStudentInfoById(req.params.id));
+    const user = await DB_student.getStudentInfoById(req.params.id);
+    res.render('layout.ejs', {
+        title: "User Dashboard",
+        body: ['users/studentinfo.ejs'],
+        user: user,
+        errors: req.query.errors
+    });
 });
 
 router.get('/address/:id', verifyViewStudent,async (req,res)=>{

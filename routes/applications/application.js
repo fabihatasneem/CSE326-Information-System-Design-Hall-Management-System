@@ -3,6 +3,14 @@ const router = require('express').Router();
 const DB_application = require('../../DB-codes/applications/DB-application-api');
 const { verifyStudent, verifyProvost, verifyStaff, verifyAuthority } = require('../../middlewares/application-verification');
 
+router.get('', verifyStudent, async (req, res) => {
+    res.render('body/application/application.ejs', {
+            title : 'Room Allocation Application',
+                body : ['application/application'],
+                user : null,
+                //errors : errors
+        })
+})
 
 router.post('/submit',verifyStudent, async (req,res)=>{   
     await DB_application.submitApplication(req.user.id,req.body.application_pdf);

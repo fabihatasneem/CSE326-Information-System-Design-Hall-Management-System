@@ -40,20 +40,22 @@ router.post('/login', async (req, res) => {
             errors.push('Wrong Password');
         }
     }
-    if(errors.length == 0){
-        res.send("logged in");
+    if (errors.length == 0) {
+        //res.send("logged in");
+        if (result.role == 'student')
+            res.redirect('/api/student/info/' + result.id);
         //res.redirect('/api/user');
     } else {
-        res.send("Error");
-        // res.render('body/auth/login.ejs', {
-        //     title : 'Hall Management Sytem Login',
-        //     user: null,
-        //     errors : errors,
-        //     form: {
-        //         id: req.body.id,
-        //         password: req.body.password
-        //     }
-        // });
+        //res.send("Error");
+        res.render('body/auth/login.ejs', {
+            title : 'Hall Management Sytem Login',
+            user: null,
+            errors : errors,
+            form: {
+                id: req.body.id,
+                password: req.body.password
+            }
+        });
     }
     
 });
@@ -61,8 +63,8 @@ router.post('/login', async (req, res) => {
 router.post('/logout', verify ,(req,res)=>{
     //destroy token
     res.cookie('auth-token', '', { maxAge:1 });
-    res.send("logged out");
-    //res.redirect('/api/auth/login');
+    //res.send("logged out");
+    res.redirect('/api/auth/login');
 });
 
 router.get('/info', verify, (req,res)=>{
