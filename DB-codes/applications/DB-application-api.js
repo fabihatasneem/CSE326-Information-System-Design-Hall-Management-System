@@ -16,6 +16,16 @@ async function getAllSubmittedApplications(){
     return result;
 }
 
+async function getApplicationInfoById(id){
+    const sql = `SELECT * FROM application_for_seat a
+                INNER JOIN student s ON s.id = a.student_id
+                INNER JOIN student_additional_info sa ON sa.id = a.student_id
+                WHERE a.id = $1`;
+    const binds = [id]
+    const result = (await database.execute(sql, binds)).rows;
+    return result;
+}
+
 async function forwardApplication(application_id){
     const sql = `UPDATE application_for_seat SET status = 'forwardedToProvost' WHERE id = $1`;
     const binds = [application_id]
@@ -124,6 +134,7 @@ async function getApprovedApplications(){
 module.exports = {
     submitApplication,
     getAllSubmittedApplications,
+    getApplicationInfoById,
     forwardApplication,
     getAllForwardedApplications,
     sortApplicationsByDistrict,
