@@ -63,8 +63,8 @@ router.post('/login', async (req, res) => {
 router.post('/logout', verify ,(req,res)=>{
     //destroy token
     res.cookie('auth-token', '', { maxAge:1 });
-    //res.send("logged out");
-    res.redirect('/api/auth/login');
+    res.send("logged out");
+    //res.redirect('/api/auth/login');
 });
 
 router.get('/info', verify, (req,res)=>{
