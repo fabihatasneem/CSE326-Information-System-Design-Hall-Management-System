@@ -16,6 +16,21 @@ async function verify(req,res,next){
     }
 }
 
+async function verifyUser(req,res,next){
+    const cookie  = req.header('cookie');
+    if(!cookie) return res.redirect('/api/auth/login?status=Access Denied');
+    const token = cookie.slice(11);
+    try{
+        const verified = jwt.verify(token, process.env.JWT_TOKEN_HELPER);
+        req.user =await DB_user.getUserById(verified.user_id);
+        if(req.user.id != req.params.id) return res.redirect('/api/auth/login?status=Access Denied');
+        next();
+    }catch(err){
+        res.status(400).send('Invalid Token');
+    }
+}
+
+
 async function verifyViewStudent(req,res,next){
     const cookie  = req.header('cookie');
     if(!cookie) return res.redirect('/api/auth/login?status=Access Denied');
@@ -32,5 +47,6 @@ async function verifyViewStudent(req,res,next){
 
 module.exports = {
     verify,
+    verifyUser,
     verifyViewStudent
 }
