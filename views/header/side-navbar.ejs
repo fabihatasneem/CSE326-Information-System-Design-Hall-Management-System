@@ -22,9 +22,19 @@
     <li class="nav-item has-submenu">
         <a class="nav-link dropdown-toggle">APPLICATION</a>
         <ul class="submenu collapse">
-            <li><a class="nav-link" href="/api/application">Room Allocation</a></li>
-            <li><a class="nav-link" href="#">Room Shifting</a></li>
-            <li><a class="nav-link" href="#">Room Cancellation</a></li>
+            <% if (user2.role == 'student') { %>
+                <li><a class="nav-link" href="/api/application">Room Allocation</a></li>
+                <li><a class="nav-link" href="#">Room Shifting</a></li>
+                <li><a class="nav-link" href="#">Room Cancellation</a></li>
+            <% } else if (user2.role=='staff' ) { %>
+                <li><a class="nav-link" href="/api/application/all_submitted">Room Allocation</a></li>
+                <li><a class="nav-link" href="#">Room Shifting</a></li>
+                <li><a class="nav-link" href="#">Room Cancellation</a></li>
+            <% } else if (user2.role == 'provost') { console.log(user2.role) %>
+                <li><a class="nav-link" href="/api/application/all_forwarded">Room Allocation</a></li>
+                <li><a class="nav-link" href="#">Room Shifting</a></li>
+                <li><a class="nav-link" href="#">Room Cancellation</a></li>
+            <% } %>
         </ul>
     </li>
     <li class="nav-item">

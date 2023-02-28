@@ -30,43 +30,92 @@
         <div class="d-flex justify-content-center h-100">
             <div class="card" style="width: 800px">
                 <div class="card-header">
+                    <% if (errors.length> 0) { %>
+                        <div class="error" style="color: green;">
+                            <% for (e of errors) { %>
+                                <ul>
+                                    <%= e %>!
+                                </ul>
+                                <% } %>
+                        </div>
+                        <% } %>
                     <h3 style="text-align: center;">Room Allocation Application</h3>
                     <div class="card-body">
                         <form action="/api/application/submit" method="post">
                             <div class="input-group form-group">
-                                <input type="text" class="form-control" id="first_name" name="first_name"
-                                    placeholder="First Name *" required
-                                    value="<%= (typeof form != 'undefined')? form.first_name : '' %>">
+                                <label for="application_pdf">Application PDF:&nbsp;&nbsp;</label>
+                                <input type="file" id="application_pdf" name="application_pdf" required>
                             </div>
                             <div class="input-group form-group">
-                                <input type="text" class="form-control" id="last_name" name="last_name"
-                                    placeholder="Last Name *" required
-                                    value="<%= (typeof form != 'undefined')? form.last_name : '' %>">
+                                <label for="father_image">Father's Image:&nbsp;&nbsp;</label>
+                                <input type="file" id="father_image" name="father_image">
                             </div>
-        
-                            
                             <div class="input-group form-group">
-                                <input type="text" class="form-control" id="city" name="city" placeholder="City *" required
-                                    value="<%= (typeof form != 'undefined')? form.city : '' %>">
+                                <label for="father_phone">Father's Phone No.:&nbsp;&nbsp;</label>
+                                <input type="number" class="form-control" id="father_phone" name="father_phone">
                             </div>
-        
                             <div class="input-group form-group">
-                                <input type="text" class="form-control" id="country" name="country" placeholder="Country *"
-                                    required value="<%= (typeof form != 'undefined')? form.country : '' %>">
+                                <label for="father_occupational_certificate">Father's Occupational Certificate:&nbsp;&nbsp;</label>
+                                <input type="file" id="father_occupational_certificate" name="father_occupational_certificate">
                             </div>
-        
+
                             <div class="input-group form-group">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Email Address *"
-                                    required value="<%= (typeof form != 'undefined')? form.email : '' %>">
+                                <label for="mother_image">Mother's Image:&nbsp;&nbsp;</label>
+                                <input type="file" id="mother_image" name="mother_image">
                             </div>
-        
                             <div class="input-group form-group">
-                                <input type="password" class="form-control" id="password" name="password"
-                                    placeholder="Password (atleast 8 characters long) *" required minlength="8"
-                                    value="<%= (typeof form != 'undefined')? form.password : '' %>">
+                                <label for="mother_phone">Mother's Phone No.:&nbsp;&nbsp;</label>
+                                <input type="number" class="form-control" id="mother_phone" name="mother_phone">
                             </div>
+                            <div class="input-group form-group">
+                                <label for="mother_occupational_certificate">Mother's Occupational Certificate:&nbsp;&nbsp;</label>
+                                <input type="file" id="mother_occupational_certificate" name="mother_occupational_certificate">
+                            </div>
+
+                            <div class="input-group form-group">
+                                <label for="guardian_name">Guardian's Name:&nbsp;&nbsp;</label>
+                                <input type="text" class="form-control" id="guardian_name" name="guardian_name">
+                            </div>
+                            <div class="input-group form-group">
+                                <label for="guardian_image">Guardian's Image:&nbsp;&nbsp;</label>
+                                <input type="file" id="guardian_image" name="guardian_image">
+                            </div>
+                            <div class="input-group form-group">
+                                <label for="guardian_phone">Guardian's Phone No.:&nbsp;&nbsp;</label>
+                                <input type="number" class="form-control" id="guardian_phone" name="guardian_phone">
+                            </div>
+
+                            <div class="input-group form-group">
+                                <label for="student_id_card">Student ID Card:&nbsp;&nbsp;</label>
+                                <input type="file" id="student_id_card" name="student_id_card">
+                            </div>
+                            <div class="input-group form-group">
+                                <label for="transcript">Transcript:&nbsp;&nbsp;</label>
+                                <input type="file" id="transcript" name="transcript">
+                            </div>
+                            <div class="input-group form-group">
+                                <label for="birth_certificate">Birth Certificate:&nbsp;&nbsp;</label>
+                                <input type="file" id="birth_certificate" name="birth_certificate">
+                            </div>
+                            <div class="input-group form-group">
+                                <label for="utility_bill">Utility Bill:&nbsp;&nbsp;</label>
+                                <input type="file" id="utility_bill" name="utility_bill">
+                            </div>
+                            <div class="input-group form-group">
+                                <label for="siblings_document">Siblings Document:&nbsp;&nbsp;</label>
+                                <input type="file" id="siblings_document" name="siblings_document">
+                            </div>
+                            <div class="input-group form-group">
+                                <label for="yearly_family_income">Yearly Family Income:&nbsp;&nbsp;</label>
+                                <input type="file" id="yearly_family_income" name="yearly_family_income">
+                            </div>
+                            <div class="input-group form-group">
+                                <label for="transfer_order">Transfer Order:&nbsp;&nbsp;</label>
+                                <input type="file" id="transfer_order" name="transfer_order">
+                            </div>
+                        
                             <div class="form-group">
-                                <input type="submit" value="Register" class="btn float-right login_btn">
+                                <input type="submit" value="Submit" class="btn float-right login_btn">
                             </div>
                         </form>
                     </div>

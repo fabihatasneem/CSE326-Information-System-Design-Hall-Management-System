@@ -44,7 +44,10 @@ router.post('/login', async (req, res) => {
         //res.send("logged in");
         if (result.role == 'student')
             res.redirect('/api/student/info/' + result.id);
-        //res.redirect('/api/user');
+        else if (result.role == 'provost')
+            res.redirect('/api/provost/info/' + result.id);
+        else if(result.role == 'staff')
+            res.redirect('/api/staff/info/' + result.id);
     } else {
         //res.send("Error");
         res.render('body/auth/login.ejs', {
@@ -63,8 +66,7 @@ router.post('/login', async (req, res) => {
 router.post('/logout', verify ,(req,res)=>{
     //destroy token
     res.cookie('auth-token', '', { maxAge:1 });
-    res.send("logged out");
-    //res.redirect('/api/auth/login');
+    res.redirect('/api/auth/login');
 });
 
 router.get('/info', verify, (req,res)=>{

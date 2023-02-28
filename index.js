@@ -35,6 +35,7 @@ const roomRoute = require('./routes/rooms/room')
 //route middleware
 //USER
 app.use('/api/auth', authRoute);    // everything in authroute will have this prefix
+app.use('/api/student', studentRoute);
 app.use('/api/provost', provostRoute); 
 app.use('/api/staff', staffRoute);    
 
