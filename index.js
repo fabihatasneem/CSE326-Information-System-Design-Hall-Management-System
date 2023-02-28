@@ -20,6 +20,8 @@ app.use(express.json());
 //USER
 const authRoute = require('./routes/users/auth');
 const studentRoute = require('./routes/users/student');
+const provostRoute = require('./routes/users/provost');
+const staffRoute = require('./routes/users/staff');
 
 //NOTICE
 const noticeRoute = require('./routes/notices/notice');
@@ -33,7 +35,8 @@ const roomRoute = require('./routes/rooms/room')
 //route middleware
 //USER
 app.use('/api/auth', authRoute);    // everything in authroute will have this prefix
-app.use('/api/student', studentRoute);    
+app.use('/api/provost', provostRoute); 
+app.use('/api/staff', staffRoute);    
 
 //NOTICE
 app.use('/api/notice',noticeRoute); 

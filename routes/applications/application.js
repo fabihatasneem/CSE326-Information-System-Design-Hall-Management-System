@@ -1,10 +1,15 @@
 require('dotenv').config();
 const router = require('express').Router();
+const DB_student = require('../../DB-codes/users/DB-student-api');
 const DB_application = require('../../DB-codes/applications/DB-application-api');
 const { verifyStudent, verifyProvost, verifyStaff, verifyAuthority } = require('../../middlewares/application-verification');
 
 router.post('/submit', verifyStudent, async (req, res) => {   
     await DB_application.submitApplication(req.user.id,req.body.application_pdf);
+    await DB_student.updateAdditionalInfoById(req.body.father_image, req.body.father_phone, req.body.father_occupational_certificate,
+        mother_image, req.body.mother_phone, req.body.mother_occupational_certificate, req.body.guardian_name, req.body.guardian_image, req.body.guardian_phone, req.body.
+        student_id_card, req.body.transcript, req.body.birth_certificate, req.body.utility_bill, req.body.siblings_document, req.body.yearly_family_income,
+        parent_transfer_order, req.user.id);
     res.send('redirect korte hobe');
 });
 
@@ -54,6 +59,10 @@ router.get('/all_call_for_viva',verifyAuthority, async (req,res)=>{
 
 router.get('/all_approved',verifyAuthority, async (req,res)=>{  
     res.send(await DB_application.getApprovedApplications());
+});
+
+router.get('/student/:id',verifyAuthority, async (req,res)=>{  
+    res.send(await DB_application.getApplicationInfoById(req.params.id));
 });
 
 module.exports = router;
