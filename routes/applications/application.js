@@ -32,12 +32,20 @@ router.post('/submit', verifyStudent, async (req, res) => {
 });
 
 router.get('/all_submitted',verifyStaff, async (req,res)=>{  
-    res.send(await DB_application.getAllSubmittedApplications());
+    const applications = await DB_application.getAllSubmittedApplications();
+    const user = await DB_user.getUserById(req.user.id);
+    res.render('layout.ejs', {
+            title : "All Submitted Applications",
+            body: ['application/submitted'],
+            user2 : user,
+            applications : applications,
+            cur_user_id : req.user.id
+        });
 });
 
-router.post('/forward',verifyStaff, async (req,res)=>{   
-    await DB_application.submitApplication(req.body.application_id);
-    res.send('redirect korte hobe');
+router.post('/forward/:id', verifyStaff, async (req, res) => {
+    await DB_application.forwardApplication(req.params.id);
+    res.redirect('/api/application/all_submitted');
 });
 
 // all_forwarded?filter=...&dhakaFlag=yes
@@ -61,9 +69,9 @@ router.post('/approve',verifyProvost, async (req,res)=>{
     res.send('redirect korte hobe');
 });
 
-router.post('/reject',verifyAuthority, async (req,res)=>{   
-    await DB_application.rejectApplication(req.body.application_id);
-    res.send('redirect korte hobe');
+router.post('/reject/:id', verifyAuthority, async (req, res) => {
+    await DB_application.rejectApplication(req.params.id);
+    res.send('application rejected');
 });
 
 router.post('/call_for_viva',verifyProvost, async (req,res)=>{   

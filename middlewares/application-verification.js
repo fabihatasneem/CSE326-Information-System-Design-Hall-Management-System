@@ -51,9 +51,11 @@ async function verifyAuthority(req,res,next){
     const token = cookie.slice(11);
     try{
         const verified = jwt.verify(token, process.env.JWT_TOKEN_HELPER);
-        req.user =await DB_user.getUserById(verified.user_id);
-        if(req.user.role != 'staff' || req.user.role != 'provost' ) return res.redirect('/api/auth/login?status=Access Denied');
-        next();
+        req.user = await DB_user.getUserById(verified.user_id);
+        if (req.user.role === 'staff' || req.user.role === 'provost')
+            next();
+        else
+            return res.redirect('/api/auth/login?status=Access Denied for invalid role');
     }catch(err){
         res.status(400).send('Invalid Token');
     }
