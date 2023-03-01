@@ -40,6 +40,11 @@
     <li class="nav-item">
         <a class="nav-link" href="/api/notice/view"> Notices </a>
     </li>
+    <% if (user2.role=='staff' || user2.role=='provost' ) { %>
+    <li class="nav-item">
+        <a class="nav-link" href="/api/room/all"> View FloorMap </a>
+    </li>
+    <% } %>
 </ul>
 </nav>
 

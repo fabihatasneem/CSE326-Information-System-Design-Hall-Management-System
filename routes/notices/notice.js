@@ -11,7 +11,6 @@ router.post('/submit',verifyStudent, async (req,res)=>{
 
 router.get('/view',verifyViewNotice, async (req,res)=>{  
     notices = await DB_notice.getAllNotices();
-    console.log(notices);
     res.render('layout.ejs', {
             title : "All Notices",
             body : ['notice/allnotices'],

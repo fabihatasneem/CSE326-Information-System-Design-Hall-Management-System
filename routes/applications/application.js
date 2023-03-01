@@ -72,9 +72,9 @@ router.get('/all_forwarded', verifyProvost, async (req, res) => {
         });
 });
 
-router.post('/approve',verifyProvost, async (req,res)=>{   
-    await DB_application.approveApplication(req.body.application_id);
-    res.send('redirect korte hobe');
+router.post('/approve/:id',verifyProvost, async (req,res)=>{   
+    await DB_application.approveApplication(req.params.id);
+    res.redirect('/api/application/all_forwarded');
 });
 
 router.post('/reject/:id', verifyAuthority, async (req, res) => {
@@ -95,7 +95,15 @@ router.get('/all_call_for_viva',verifyAuthority, async (req,res)=>{
 });
 
 router.get('/all_approved',verifyAuthority, async (req,res)=>{  
-    res.send(await DB_application.getApprovedApplications());
+    const applications = await DB_application.getApprovedApplications();
+    const user = await DB_user.getUserById(req.user.id);
+    res.render('layout.ejs', {
+            title : "All Approved Applications",
+            body: ['application/approved'],
+            user2 : user,
+            applications : applications,
+            cur_user_id : req.user.id
+        });
 });
 
 router.get('/student/:id',verifyAuthority, async (req,res)=>{  

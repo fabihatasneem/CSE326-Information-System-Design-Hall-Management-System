@@ -29,17 +29,6 @@
         background-color: white;
     }
 
-    .login_btn{
-    color: rgb(255, 255, 255);
-    background-color: #940031;
-    width: 100px;
-    }
-
-    .login_btn:hover{
-    color: #940031;
-    background-color: white;
-    }
-
     input:focus {
         outline: 0 0 0 0 !important;
         box-shadow: 0 0 0 0 !important;
@@ -286,75 +275,46 @@
         </h2>
         <div class="col-md-12">
             <div class="row">
-                <div id="content" class="content col-12">
-                    <label>Apply Filters:&nbsp;</label>
-                    <form action="/api/application/all_forwarded" method="get">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="filter1" value="dist">
-                            <label class="form-check-label" for="inlineCheckbox1">District</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="filter2" value="batch">
-                            <label class="form-check-label" for="inlineCheckbox2">Batch</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="filter3" value="result">
-                            <label class="form-check-label" for="inlineCheckbox3">Result</label>
-                        </div>
-                        <div class="form-check-inline">
-                            <input type="submit" value="Filter" class="btn login_btn">
-                        </div>
-                    </form>
-                    <br>
+                <div id="content" class="content col-10">
                     <div class="tab-pane fade active show" id="profile-post">
-                        <% if (applications.length===0) {%>
-                            <h5 style="margin-left: 320px; color: gray; font-style: italic;">No new applications to
-                                show...</h5>
-                            <% }%>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Student ID</th>
-                                            <th scope="col">Application</th>
-                                            <th scope="col">Time Stamp</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% for (application of applications) { %>
-                                            <tr>
-                                                <th scope="row">
-                                                    <%= application.student_id %>
-                                                </th>
-                                                <td><a href="<%- application.application_pdf%>" download>
-                                                        <%= application.application_pdf %>
-                                                    </a></td>
-                                                <td>
-                                                    <%= application.submission_time %>
-                                                </td>
-                                                <td>
-                                                    <div class="inline-block">
-                                                        <form method="post" action="/api/application/forward/<%- application.id %>">
-                                                            <button type="submit" class="btn btn-primary mb-2">
-                                                                <i class="fa fa-calendar"></i></button>
-                                                        </form>
-                                                        <form method="post" action="/api/application/approve/<%- application.id %>">
-                                                            <button type="submit" class="btn btn-primary mb-2">
-                                                                <i class="fa fa-check-square"></i></button>
-                                                        </form>
-                                                        <form method="post" action="/api/application/reject/<%- application.id %>">
-                                                            <button type="submit" class="btn btn-primary mb-2"
-                                                                onclick="return confirm('Are you sure you want to reject this application?');"><i
-                                                                    class="fas fa-trash"></i></button>
-                                                        </form>
-                                                    </div>
-                                                    
-                                                </td>
-                                            </tr>
-                                            <% }%>
-                                    </tbody>
-                                </table>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Floor No.</th>
+                                    <th scope="col">Room No.</th>
+                                    <th scope="col">Seat ID</th>
+                                    <th scope="col">Student ID</th>
+                                    <th scope="col">Department</th>
+                                    <th scope="col">Level-Term</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% for (room of rooms) { %>
+                                <tr>
+                                    <th scope="row">
+                                        <%= room.floor %>
+                                    </th>
+                                    <td>
+                                        <%= room.room_id %>
+                                    </td>
+                                    <td>
+                                        <%= room.seat_id %>
+                                    </td>
+                                    <td>
+                                        <%= room.student_id %>
+                                    </td>
+                                    <td>
+                                        <%= room.department %>
+                                    </td>
+                                    <td>
+                                        <%= room.level %>-<%= room.term %>
+                                    </td>
+                                </tr>
+                                <% }%>
+                            </tbody>
+                        </table>
                     </div>
+                    <!-- end #profile-post tab -->
                 </div>
             </div>
         </div>

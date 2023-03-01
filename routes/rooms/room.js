@@ -1,5 +1,6 @@
 require('dotenv').config();
 const router = require('express').Router();
+const DB_user = require('../../DB-codes/users/DB-user-api');
 const DB_student = require('../../DB-codes/users/DB-student-api');
 const DB_room = require('../../DB-codes/rooms/DB-room-api');
 const DB_seat = require('../../DB-codes/rooms/DB-seat-api');
@@ -8,7 +9,15 @@ const { verifyRoomAccess } = require('../../middlewares/room-verification');
 
 
 router.get('/all',verifyRoomAccess, async (req,res)=>{   
-    res.send(await DB_room.getAllRoomInfo());
+    const rooms = await DB_room.getAllRoomInfo();
+    const user = await DB_user.getUserById(req.user.id);
+    res.render('layout.ejs', {
+            title : "Floor Map",
+            body : ['floormap/allrooms'],
+            rooms: rooms,
+            user2 : user,
+            cur_user_id : req.user.id
+        });
 });
 
 router.get('/unallocated',verifyRoomAccess, async (req,res)=>{  
