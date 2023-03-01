@@ -49,19 +49,27 @@ router.post('/forward/:id', verifyStaff, async (req, res) => {
 });
 
 // all_forwarded?filter=...&dhakaFlag=yes
-router.get('/all_forwarded',verifyProvost, async (req,res)=>{
+router.get('/all_forwarded', verifyProvost, async (req, res) => {
     let dhakaFlag = 0;
     if(req.query.dhakaFlag === 'yes') dhakaFlag = 1;
-    if(req.query.filter === 'dist'){
-        res.send(await DB_application.sortApplicationsByDistrict(dhakaFlag));
+    if(req.query.filter1 === 'dist' && req.query.filter2 === 'batch' && req.query.filter3 === 'result'){
+        const applications = await DB_application.sortApplicationsBySeniorityAndDistrictAndResult(dhakaFlag);
     } 
-    if(req.query.filter === 'dist_batch'){
-        res.send(await DB_application.sortApplicationsBySeniorityAndDistrict(dhakaFlag));
+    if(req.query.filter1 === 'dist' && req.query.filter2 === 'batch'){
+        const applications = await DB_application.sortApplicationsBySeniorityAndDistrict(dhakaFlag);
     }
-    if(req.query.filter === 'dist_batch_result'){
-        res.send(await DB_application.sortApplicationsBySeniorityAndDistrictAndResult(dhakaFlag));
+    if(req.query.filter1 === 'dist'){
+        const applications = await DB_application.sortApplicationsByDistrict(dhakaFlag);
     }
-    res.send(await DB_application.getAllForwardedApplications());
+    const applications = await DB_application.getAllForwardedApplications();
+    const user = await DB_user.getUserById(req.user.id);
+    res.render('layout.ejs', {
+            title : "All Forwarded Applications",
+            body: ['application/forwarded'],
+            user2 : user,
+            applications : applications,
+            cur_user_id : req.user.id
+        });
 });
 
 router.post('/approve',verifyProvost, async (req,res)=>{   
@@ -71,7 +79,10 @@ router.post('/approve',verifyProvost, async (req,res)=>{
 
 router.post('/reject/:id', verifyAuthority, async (req, res) => {
     await DB_application.rejectApplication(req.params.id);
-    res.send('application rejected');
+    if (req.user.role === 'staff')
+        res.redirect('/api/application/all_submitted');
+    else if (req.user.role === 'provost')
+        res.redirect('/api/application/all_forwarded');
 });
 
 router.post('/call_for_viva',verifyProvost, async (req,res)=>{   
