@@ -1,5 +1,6 @@
 require('dotenv').config();
 const router = require('express').Router();
+const DB_user = require('../../DB-codes/users/DB-user-api');
 const DB_notice = require('../../DB-codes/notices/DB-notice-api');
 const { verifyStudent } = require('../../middlewares/application-verification');
 const { verifyViewNotice, verifyUploadNotice, verifyApproveNotice } = require('../../middlewares/notice-verification');
@@ -11,10 +12,12 @@ router.post('/submit',verifyStudent, async (req,res)=>{
 
 router.get('/view',verifyViewNotice, async (req,res)=>{  
     notices = await DB_notice.getAllNotices();
+    user = await DB_user.getUserById(req.user.id);
     res.render('layout.ejs', {
             title : "All Notices",
             body : ['notice/allnotices'],
-            notices : notices,
+            notices: notices,
+            user2: user,
             cur_user_id : req.user.id
         });
 });
