@@ -106,7 +106,7 @@ async function rejectApplication(application_id){
 }
 
 async function approveApplication(application_id){
-    const sql = `UPDATE application_for_seat SET status = 'approve' WHERE id = $1`;
+    const sql = `UPDATE application_for_seat SET status = 'approved' WHERE id = $1`;
     const binds = [application_id]
     await database.execute(sql, binds);
 }

@@ -277,44 +277,52 @@
             <div class="row">
                 <div id="content" class="content col-12">
                     <div class="tab-pane fade active show" id="profile-post">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Student ID</th>
-                                            <th scope="col">Application</th>
-                                            <th scope="col">Time Stamp</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% for (application of applications) { %>
-                                            <tr>
-                                                <th scope="row">
-                                                    <%= application.student_id %>
-                                                </th>
-                                                <td><a href="<%- application.application_pdf%>" download>
-                                                        <%= application.application_pdf %>
-                                                    </a></td>
-                                                <td>
-                                                    <%= application.submission_time %>
-                                                </td>
-                                                <td>
-                                                    <form method="post"
-                                                        action="/api/application/forward/<%- application.id %>">
-                                                        <button type="submit" class="btn btn-primary mb-2">
-                                                            <i class="fa fa-arrow-right"></i></button>
-                                                    </form>
-                                                    <form method="post"
-                                                        action="/api/application/reject/<%- application.id %>">
-                                                        <button type="submit" class="btn btn-primary mb-2"
-                                                            onclick="return confirm('Are you sure you want to reject this application?');"><i
-                                                                class="fas fa-trash"></i></button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            <% }%>
-                                    </tbody>
-                                </table>
+                        <div class="inline-block">
+                            <% if (user2.role == 'provost') { %>
+                                <a href="/api/application/all_forwarded" class="btn btn-primary mb-2 float-right">
+                                Forwarded Applications</a>
+                            <% } else if (user2.role == 'staff') { %>
+                                <a href="/api/application/all_submitted" class="btn btn-primary mb-2 float-right">
+                                Submitted Applications</a>
+                            <% } %>
+                            <a href="/api/application/all_call_for_viva" class="btn btn-primary mb-2 float-right" style="margin-right: 20px;">
+                                Call For Viva Application</a>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Student ID</th>
+                                    <th scope="col">Application</th>
+                                    <th scope="col">Time Stamp</th>
+                                    <% if (user2.role == 'staff') { %>
+                                    <th scope="col">Action</th>
+                                    <% } %>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (application of applications) { %>
+                                    <tr>
+                                        <th scope="row">
+                                            <%= application.student_id %>
+                                        </th>
+                                        <td><a href="<%- application.application_pdf%>" download>
+                                                <%= application.application_pdf %>
+                                            </a></td>
+                                        <td>
+                                            <%= application.submission_time %>
+                                        </td>
+                                        <% if (user2.role == 'staff') { %>
+                                        <td>
+                                            <form method="get" action="/api/room/unallocated">
+                                                    <input type="hidden" name="student_id" value="<%= application.student_id %>">
+                                                    <button type="submit" class="btn btn-primary">Allocate Room</button>
+                                            </form>
+                                        </td>
+                                        <% } %>
+                                    </tr>
+                                    <% }%>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

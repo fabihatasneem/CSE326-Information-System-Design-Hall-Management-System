@@ -32,7 +32,7 @@
     .login_btn{
     color: rgb(255, 255, 255);
     background-color: #940031;
-    width: 100px;
+    width: 70px;
     }
 
     .login_btn:hover{
@@ -287,30 +287,37 @@
         <div class="col-md-12">
             <div class="row">
                 <div id="content" class="content col-12">
-                    <label>Apply Filters:&nbsp;</label>
-                    <form action="/api/application/all_forwarded" method="get">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="filter1" value="dist">
-                            <label class="form-check-label" for="inlineCheckbox1">District</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="filter2" value="batch">
-                            <label class="form-check-label" for="inlineCheckbox2">Batch</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="filter3" value="result">
-                            <label class="form-check-label" for="inlineCheckbox3">Result</label>
-                        </div>
-                        <div class="form-check-inline">
-                            <input type="submit" value="Filter" class="btn login_btn">
-                        </div>
-                    </form>
-                    <br>
+                    
                     <div class="tab-pane fade active show" id="profile-post">
                         <% if (applications.length===0) {%>
                             <h5 style="margin-left: 320px; color: gray; font-style: italic;">No new applications to
                                 show...</h5>
                             <% }%>
+                            <div class="inline-block">
+                                <label>Apply Filters:&nbsp;</label>
+                                <form action="/api/application/all_forwarded" method="get">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="filter1" value="dist">
+                                        <label class="form-check-label" for="inlineCheckbox1">District</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="filter2" value="batch">
+                                        <label class="form-check-label" for="inlineCheckbox2">Batch</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="filter3" value="result">
+                                        <label class="form-check-label" for="inlineCheckbox3">Result</label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <input type="submit" value="Filter" class="btn login_btn">
+                                    </div>
+                                </form>
+                                <br>
+                                <a href="/api/application/all_approved" class="btn btn-primary mb-2 float-right">
+                                    Approved Applications</a>
+                                <a href="/api/application/all_call_for_viva" class="btn btn-primary mb-2 float-right" style="margin-right: 20px;">
+                                    Call for Viva Student List</a>
+                            </div>
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -348,7 +355,6 @@
                                                                     class="fas fa-trash"></i></button>
                                                         </form>
                                                     </div>
-                                                    
                                                 </td>
                                             </tr>
                                             <% }%>

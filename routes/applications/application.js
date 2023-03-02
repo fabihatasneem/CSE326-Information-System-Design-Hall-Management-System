@@ -91,11 +91,20 @@ router.post('/call_for_viva',verifyProvost, async (req,res)=>{
 });
 
 router.get('/all_call_for_viva',verifyAuthority, async (req,res)=>{  
-    res.send(await DB_application.getCalledForVivaApplications());
+    applications = await DB_application.getCalledForVivaApplications();
+    const user = await DB_user.getUserById(req.user.id);
+    res.render('layout.ejs', {
+            title : "Call for Viva Student List",
+            body: ['application/callforviva'],
+            user2 : user,
+            applications : applications,
+            cur_user_id : req.user.id
+        });
 });
 
 router.get('/all_approved',verifyAuthority, async (req,res)=>{  
     const applications = await DB_application.getApprovedApplications();
+    console.log(applications);
     const user = await DB_user.getUserById(req.user.id);
     res.render('layout.ejs', {
             title : "All Approved Applications",

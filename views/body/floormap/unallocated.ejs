@@ -275,48 +275,36 @@
         </h2>
         <div class="col-md-12">
             <div class="row">
-                <div id="content" class="content col-12">
-                    <!-- begin #profile-post tab -->
+                <div id="content" class="content col-10">
                     <div class="tab-pane fade active show" id="profile-post">
-                        <% if (applications.length===0) {%>
-                        <h5 style="margin-left: 320px; color: gray; font-style: italic;">No new applications to show...</h5>
-                        <% }%>
-                        <div class="inline-block">
-                            <a href="/api/application/all_approved" class="btn btn-primary mb-2 float-right">
-                                Approved Applications</a>
-                                <a href="/api/application/all_call_for_viva" class="btn btn-primary mb-2 float-right" style="margin-right: 20px;">
-                                    Call For Viva Application</a>
-                        </div>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Student ID</th>
-                                    <th scope="col">Application</th>
-                                    <th scope="col">Time Stamp</th>
+                                    <th scope="col">Floor No.</th>
+                                    <th scope="col">Room No.</th>
+                                    <th scope="col">Seat ID</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for (application of applications) { %>
+                                <% for (room of rooms) { %>
                                     <tr>
                                         <th scope="row">
-                                            <%= application.student_id %>
+                                            <%= room.floor %>
                                         </th>
-                                        <td><a href="<%- application.application_pdf%>" download>
-                                                <%= application.application_pdf %>
-                                            </a></td>
                                         <td>
-                                            <%= application.submission_time %>
+                                            <%= room.room_id %>
                                         </td>
                                         <td>
-                                            <form method="post" action="/api/application/forward/<%- application.id %>">
-                                                <button type="submit" class="btn btn-primary mb-2">
-                                                    <i class="fa fa-arrow-right"></i></button>
-                                            </form>
-                                            <form method="post" action="/api/application/reject/<%- application.id %>">
-                                                <button type="submit" class="btn btn-primary mb-2"
-                                                    onclick="return confirm('Are you sure you want to reject this application?');"><i class="fas fa-trash"></i></button>
-                                            </form>
+                                            <%= room.seat_id %>
+                                        </td>
+                                        <td>
+                                            <div class="inline-block">
+                                                <form method="post" action="/api/room/allocate/<%- student_id %>">
+                                                    <button type="submit" class="btn btn-primary mb-2">
+                                                        Allocate</button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                     <% }%>
